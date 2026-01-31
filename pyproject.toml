@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pera"
+version = "0.0.1"
+authors = [
+  { name="Sebastian Ibarraran", email="sebastian.ibarraran@stanford.edu" },
+  { name="Shriram Chennakesavalu", email="shriramc@stanford.edu" },
+  { name="Frank Hu", email="frankhu@stanford.edu" },
+  { name="Grant Rotskoff", email="rotskoff@stanford.edu" }
+]
+description = "Efficient, Few-shot Directed Evolution with Energy Rank Alignment"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "torch",
+    "numpy",
+    "pandas",
+    "h5py",
+    "lightning",
+    "hydra-core",
+    "omegaconf",
+    "biopython",
+    "einops",
+    "lightning-bolts",
+    "esm",
+    "tensorboard",
+    "wandb",
+]
+
+[project.urls]
+Homepage = "https://github.com/rotskoff-group/era-directed-evolution"
+
+[project.scripts]
+pera_train = "pera.scripts.train.train_transformer:main"
+pera_sample = "pera.scripts.infer.infer_transformer:main"
+pera_compute_landscape = "pera.scripts.compute_landscape:main"

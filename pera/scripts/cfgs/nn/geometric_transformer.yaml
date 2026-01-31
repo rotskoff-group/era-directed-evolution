@@ -1,0 +1,70 @@
+model: "GeometricTransformer"
+dataset: "GeometricTransformerERADataset"
+dtype: float32
+device: cuda
+data_in_memory: False
+load_model: "/data/scratch/group_scratch/era/directed_evolution/models/esm3clm/esm3_clm.pt"
+batch_size: 4
+num_workers: 4
+collate_fn: "geometric_transformer_era_collate_fn"
+model_args:
+  dim_model: 1536
+  unified_transformer_args:
+    n_layers: 48
+    geom_layer_indices: [0]
+    mha_layer_indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47]
+    bias: False
+    mha_args: 
+      num_heads: 24
+      bias: False
+      qk_layernorm: True
+    gha_args: 
+      num_heads: 256 #v_heads in ESM repo
+      num_vector_messages: 1
+      mask_and_zero_frameless: True # hard code
+      bias: False # hard code 
+    scaling_factor: 1.1547005383792515 #sqrt(48/36)
+    ffn_type: "swiglu" #hard code
+    norm_type: "layer_norm" #hard code
+    expansion_ratio: 2.66666666667 #hard code (8/3)
+  struc_token_info:
+    mask: 4096
+    eos: 4097
+    bos: 4098
+    pad: 4099
+    total: 5001
+    max_non_special_token: 4095
+  residue_token_info:
+    mask: 32
+    eos: 2
+    bos: 0
+    pad: 1
+    total: 33
+    max_non_special_token: null
+  sasa_token_info:
+    mask: 0
+    eos: 0
+    bos: 0
+    pad: 0
+    total: null 
+    max_non_special_token: null
+  sec_struct_token_info:
+    mask: 0
+    eos: 0
+    bos: 0
+    pad: 0
+    total: null
+    max_non_special_token: null
+  res_annot_token_info:
+    mask: 0
+    eos: 0
+    bos: 0
+    pad: 0
+    total: null
+    max_non_special_token: null
+
+  
+dataset_split_args:
+  train: 0.8
+  val: 0.2
+  test: 0.0
