@@ -9,12 +9,13 @@ hydra:
     dir: .
 
 compute_landscape:
+  better_energy: "lower"
   data: "GB1"
   data_root_path: "/home/scratch/group_scratch/era/directed_evolution/data"
   device: "cuda:0"
   sampling_temperature: 1.0
   network_filename: "/home/scratch/group_scratch/era/directed_evolution/models/esm3clm/esm3_clm.pt"
-  output_filename: "${compute_landscape.data}_all_energies_and_logps.hdf5"
+  output_filename: "GB1_all_energies_and_logps.hdf5"
   batch_size: 4
   gb1_muts_index: 100000
-  model_config_filename: "/scratch/groups/rotskoff/sebastian/era/protein_era/cfgs/models/esm3_clm.yaml
+  model_config_filename: "/scratch/groups/rotskoff/sebastian/era/protein_era/cfgs/models/esm3_clm.yaml"

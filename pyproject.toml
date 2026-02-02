@@ -40,4 +40,4 @@ Homepage = "https://github.com/rotskoff-group/era-directed-evolution"
 [project.scripts]
 pera_train = "pera.scripts.train.train_transformer:main"
 pera_sample = "pera.scripts.infer.infer_transformer:main"
-pera_compute_landscape = "pera.scripts.compute_landscape:main"
+pera_compute_landscape = "pera.scripts.compute_landscape.compute_landscape:main"

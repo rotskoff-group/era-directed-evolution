@@ -72,29 +72,21 @@ class UnifiedTransformerBlock(nn.Module):
         d_model,
         bias=False,
         use_mha=False,
-        # use_ga=False,
-        # use_ida=False,
+        use_ga=False,
         ffn_type="swiglu",
         scaling_factor=1,
         expansion_ratio=8 / 3,
         mha_args=None,
-        # gha_args=None,
-        # ida_args=None,
+        gha_args=None,
     ):
         super().__init__()
         self.use_mha = use_mha
         if self.use_mha:
             self.attn = MultiHeadAttention(d_model=d_model, **mha_args)
         
-        # self.use_ga = use_ga
-        # if self.use_ga:
-        #     self.geom_attn = GeometricAttention(d_model=d_model, **gha_args)
-        
-        # self.use_ida = use_ida
-        # if self.use_ida:
-        #     self.interatomic_distance_attention = InteratomicDistanceAttention(
-        #         d_model=d_model, **ida_args
-        #     )
+        self.use_ga = use_ga
+        if self.use_ga:
+            self.geom_attn = GeometricAttention(d_model=d_model, **gha_args)
 
         if ffn_type == "swiglu":
             self.ffn = swiglu_ln_ffn(d_model, expansion_ratio, bias)

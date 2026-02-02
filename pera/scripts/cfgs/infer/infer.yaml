@@ -1,14 +1,13 @@
 target: "GB1"
-num_samples: 384
-replicate: 1
+num_samples: 96
 device: "cuda:0"
 sampling_temperature: 1.0
 better_energy: "lower"
 model_config_filename: "/scratch/groups/rotskoff/sebastian/era/protein_era/cfgs/models/esm3_clm.yaml"
 network_filename: "/scratch/groups/rotskoff/sebastian/era/protein_era/models/esm3clm/esm3_clm.pt"
 data_root_path: "/scratch/groups/rotskoff/sebastian/era/protein_era/data"
-save_folder_name: "${target}/base_model_${num_samples}"
-output_filename: "trpb_${replicate}.pt"
+save_folder_name: "GB1/base_model_96"
+output_filename: "GB1.pt"
 num_to_generate_per_mask: 4
 inference_batch_size: 1
 gb1_muts_index: 100000

@@ -21,10 +21,11 @@ def main(cfg):
     sampling_temperature = compute_config.sampling_temperature
 
     model_config = OmegaConf.load(compute_config.model_config_filename)
-    nn_config = model_config.nn_config
-    train_config = model_config.train_config
+    nn_config = model_config.nn
+    train_config = model_config.train
 
-    OmegaConf.update(cfg, "train.lightning_model_args.sampling_temperature", sampling_temperature)
+    OmegaConf.update(train_config, "lightning_model_args.sampling_temperature", sampling_temperature)
+    OmegaConf.update(train_config, "lightning_model_args.better_energy", compute_config.better_energy)
     esm_model = BidirectionalModel(nn_config["model"],
                                    nn_config["model_args"],
                                    **train_config["lightning_model_args"]).to(device)

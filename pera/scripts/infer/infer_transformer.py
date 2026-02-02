@@ -22,8 +22,8 @@ def main(cfg):
     nn_config = model_config["nn"]
     train_config = model_config["train"]
 
-    OmegaConf.update(cfg, "train.lightning_model_args.sampling_temperature", sampling_temperature)
-    OmegaConf.update(cfg, "train.lightning_model_args.better_energy", infer_config.better_energy)
+    OmegaConf.update(train_config, "lightning_model_args.sampling_temperature", sampling_temperature)
+    OmegaConf.update(train_config, "lightning_model_args.better_energy", infer_config.better_energy)
 
 
 
