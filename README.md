@@ -1,5 +1,5 @@
 # era-directed-evolution
-Official repository for "Efficient, Few-shot Directed Evolution with Energy Rank Alignment".
+Official repository for "Efficient, Few-shot Directed Evolution with Energy Rank Alignment". All necessary datasets and files from experiments in the paper can be found on our Huggingface Model and Datasets repositories.
 
 ## Environment setup (uv)
 Create and sync the environment, then install the project in editable mode:
@@ -21,7 +21,7 @@ activate the environment with an older python version, such as 3.10.12:
 All training/inference scripts use Hydra configs in `pera/scripts/cfgs/`.
 
 ### Training
-Train a transformer model:
+Train the provided ESM3-1.4B model checkpoint with ERA, SFT, or DPO:
 ```bash
 pera_train
 ```
@@ -32,7 +32,7 @@ pera_train train.trainer_args.max_epochs=100 train.trainer_args.devices=1
 ```
 
 ### Inference (sampling)
-Sample sequences from a trained model:
+Sample sequences from a trained ESM3-1.4B model:
 ```bash
 pera_sample
 ```
