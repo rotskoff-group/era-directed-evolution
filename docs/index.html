@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ERA Directed Evolution</title>
+    <meta
+      name="description"
+      content="Efficient, Few-shot Directed Evolution with Energy Rank Alignment"
+    />
+    <script>
+      window.MathJax = {
+        tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] },
+        svg: { fontCache: "global" }
+      };
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+      id="MathJax-script"
+      async
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #0d1418;
+        --subtle: #4b5b60;
+        --accent: #0b6f6b;
+        --accent-2: #c8842b;
+        --surface: #f6f2ec;
+        --surface-2: #eef3f2;
+        --stroke: #d6d8d5;
+        --shadow: 0 24px 50px rgba(13, 20, 24, 0.12);
+        --radius-lg: 24px;
+        --radius-md: 16px;
+        --radius-sm: 10px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        color: var(--ink);
+        background: radial-gradient(
+            circle at 15% 10%,
+            rgba(11, 111, 107, 0.12),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 80% 0%,
+            rgba(200, 132, 43, 0.14),
+            transparent 55%
+          ),
+          #fbfaf7;
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 72px 24px 96px;
+      }
+
+      header {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .hero-card {
+        padding: 32px;
+        border-radius: var(--radius-lg);
+        background: linear-gradient(135deg, #ffffff 0%, #f1f7f5 100%);
+        box-shadow: var(--shadow);
+      }
+
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 12px;
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      h1 {
+        margin: 12px 0 16px;
+        font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+        line-height: 1.05;
+      }
+
+      .lede {
+        font-family: "Source Serif 4", serif;
+        font-size: 1.1rem;
+        color: var(--subtle);
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 22px;
+      }
+
+      .btn {
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        border: 1px solid transparent;
+        text-decoration: none;
+        color: var(--ink);
+        background: #fff;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .btn.primary {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 30px rgba(13, 20, 24, 0.18);
+      }
+
+      .hero-visual {
+        overflow: hidden;
+      }
+
+      .hero-visual img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      section {
+        margin-top: 72px;
+      }
+
+      .section-wide {
+        display: grid;
+        gap: 20px;
+      }
+
+      h2 {
+        margin: 0 0 16px;
+        font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+      }
+
+      .grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .stack {
+        display: grid;
+        gap: 20px;
+      }
+
+      .card {
+        padding: 22px;
+        background: #fff;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--stroke);
+        box-shadow: 0 14px 28px rgba(13, 20, 24, 0.08);
+      }
+
+      .card h3 {
+        margin-top: 0;
+      }
+
+      .table-card {
+        padding: 0;
+        overflow: hidden;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+
+      th,
+      td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--stroke);
+        text-align: center;
+      }
+
+      th:first-child,
+      td:first-child {
+        text-align: left;
+        font-weight: 600;
+      }
+
+      thead th {
+        background: var(--surface-2);
+        font-weight: 600;
+      }
+
+      .table-caption {
+        padding: 14px 18px 18px;
+        color: var(--subtle);
+        font-size: 0.92rem;
+        border-top: 1px solid var(--stroke);
+        background: #fff;
+      }
+
+      .results {
+        display: grid;
+        gap: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .result-image {
+        min-height: 200px;
+        border-radius: var(--radius-md);
+        background: linear-gradient(135deg, #e6f0ee, #f7efe5);
+        border: 1px solid var(--stroke);
+        display: grid;
+        place-items: center;
+        color: var(--subtle);
+        overflow: hidden;
+      }
+
+      .result-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .code-panel {
+        background: #0d1418;
+        color: #f5f4f0;
+        padding: 22px;
+        border-radius: var(--radius-md);
+        border: 1px solid #1c2a30;
+      }
+
+      pre {
+        margin: 0;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+
+      .pill {
+        display: inline-flex;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--surface-2);
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 0.85rem;
+      }
+
+      .fade-in {
+        opacity: 0;
+        transform: translateY(16px);
+        animation: fadeIn 0.9s ease forwards;
+      }
+
+      .fade-in.delay-1 {
+        animation-delay: 0.2s;
+      }
+
+      .fade-in.delay-2 {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      footer {
+        margin-top: 80px;
+        color: var(--subtle);
+        font-size: 0.95rem;
+      }
+
+      @media (max-width: 720px) {
+        main {
+          padding: 56px 18px 80px;
+        }
+
+        .hero-card {
+          padding: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="hero-card fade-in">
+          <div class="eyebrow">ERA Directed Evolution</div>
+          <h1>Efficient, few-shot protein discovery with energy rank alignment.</h1>
+          <p class="lede">
+            ERA aligns learned sequence energies with experimental fitness rankings, enabling
+            fast, data-efficient design loops. Use it to train geometric transformers, sample
+            sequences, and map full fitness landscapes from limited data.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#quickstart">Run the code</a>
+            <a class="btn" href="#data">Download the data</a>
+            <a class="btn" href="#paper">Read the paper</a>
+          </div>
+        </div>
+        <div class="hero-visual fade-in delay-1">
+          <img src="assets/title-figure.png" alt="ERA schematic" />
+        </div>
+      </header>
+
+      <section id="approach" class="fade-in delay-1">
+        <h2>Preference Optimization for Few-Shot Experimental Design</h2>
+        <div class="section-wide">
+          <div class="card table-card">
+            <table>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>DHFR</th>
+                  <th>GB1</th>
+                  <th>ParD2</th>
+                  <th>ParD3</th>
+                  <th>TrpB4</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>MLDE</td>
+                  <td>0.96</td>
+                  <td>0.67</td>
+                  <td>0.99</td>
+                  <td>0.90</td>
+                  <td>0.78</td>
+                </tr>
+                <tr>
+                  <td>ALDE</td>
+                  <td>0.96</td>
+                  <td>0.80</td>
+                  <td>0.99</td>
+                  <td>0.99</td>
+                  <td>0.89</td>
+                </tr>
+                <tr>
+                  <td>EVOLVEpro (ESM2)</td>
+                  <td>0.95</td>
+                  <td>0.81</td>
+                  <td><strong>1.0</strong></td>
+                  <td>0.99</td>
+                  <td>0.88</td>
+                </tr>
+                <tr>
+                  <td>EVOLVEpro (ESM3)</td>
+                  <td><strong>1.0</strong></td>
+                  <td>0.77</td>
+                  <td><strong>1.0</strong></td>
+                  <td>0.99</td>
+                  <td>0.79</td>
+                </tr>
+                <tr>
+                  <td>DPO</td>
+                  <td><strong>1.0</strong></td>
+                  <td>0.78</td>
+                  <td><strong>1.0</strong></td>
+                  <td>0.99</td>
+                  <td>0.81</td>
+                </tr>
+                <tr>
+                  <td>ERA</td>
+                  <td><strong>1.0 ± 0.00</strong></td>
+                  <td><strong>0.83 ± 0.04</strong></td>
+                  <td><strong>1.0 ± 0.00</strong></td>
+                  <td><strong>1.0 ± 0.00</strong></td>
+                  <td><strong>0.91 ± 0.02</strong></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="table-caption">
+              Average maximum fitness achieved across multiple replicate runs with standard errors
+              included. All methods used 384 total samples for training, with ALDE, DPO, and ERA
+              doing so over four rounds (96 per round). For MLDE and ALDE, 50 replicates were
+              averaged and values were obtained from Li et al. (2025), whereas 10 replicates were
+              averaged for ERA, DPO, and EVOLVEpro.
+            </div>
+          </div>
+          <div class="card">
+            <p>
+              Energy rank alignment reframes few-shot protein engineering as preference
+              optimization. Let $f(x)$ be a learned energy for sequence $x$. For any observed pair
+              $(x_i, x_j)$ where $x_i$ is experimentally preferred to $x_j$, we enforce
+              $f(x_i) < f(x_j)$ using a smooth pairwise loss. A common choice is
+              $$\mathcal{L}(x_i, x_j) = \log\bigl(1 + \exp\bigl(f(x_i) - f(x_j)\bigr)\bigr),$$
+              which penalizes inversions while remaining stable under limited data. Optimizing this
+              ranking loss aligns energies with relative fitness ordering instead of absolute
+              calibration, improving generalization when only a handful of measurements are
+              available.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="results" class="fade-in delay-2">
+        <h2>Highlighted outcomes</h2>
+        <div class="results">
+          <div class="card">
+            <div class="result-image">
+              <img src="assets/gb1.png" alt="GB1 results" />
+            </div>
+            <h3>Fitness ranking improvements</h3>
+            <p>Replace with a chart showing rank correlation gains across datasets.</p>
+          </div>
+          <div class="card">
+            <div class="result-image">Result image placeholder</div>
+            <h3>Sampling quality</h3>
+            <p>Highlight the percentage of high-fitness variants recovered in top samples.</p>
+          </div>
+          <div class="card">
+            <div class="result-image">Result image placeholder</div>
+            <h3>Landscape estimation</h3>
+            <p>Show full distribution predictions or density plots across landscapes.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="quickstart" class="fade-in delay-2">
+        <span class="pill">Quickstart</span>
+        <h2>Train using your data</h2>
+        <div class="stack">
+          <div class="card">
+            <h3>Environment setup</h3>
+            <div class="code-panel">
+              <pre><code>uv sync
+uv pip install -e .</code></pre>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Train a model</h3>
+            <div class="code-panel">
+              <pre><code>pera_train \
+  train.data_root_path=./data \
+  train.data=GB1 \
+  train.trainer_args.max_epochs=100 \
+  train.trainer_args.devices=1</code></pre>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Sample sequences</h3>
+            <div class="code-panel">
+              <pre><code>pera_sample \
+  infer.target=GB1 \
+  infer.num_samples=512 \
+  infer.network_filename=/path/to/checkpoint.pt</code></pre>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Compute landscape</h3>
+            <div class="code-panel">
+              <pre><code>pera_compute_landscape \
+  compute_landscape.data=GB1 \
+  compute_landscape.data_root_path=./data</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        ERA Directed Evolution · Source on GitHub · Designed for GitHub Pages
+      </footer>
+    </main>
+  </body>
+</html>
