@@ -8,6 +8,14 @@ Create and sync the environment, then install the project in editable mode:
 uv sync
 uv pip install -e .
 ```
+If you encounter a problem regarding `import ctypes`, this indicates a python version that is too new. In that case,
+activate the environment with an older python version, such as 3.10.12:
+```
+>>> uv venv --python=3.10.12 .venv
+>>> uv pip install --upgrade uv
+>>> uv sync
+```
+
 
 ## Commands
 All training/inference scripts use Hydra configs in `pera/scripts/cfgs/`.
