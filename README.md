@@ -1,6 +1,8 @@
 # era-directed-evolution
 Official repository for "Efficient, Few-shot Directed Evolution with Energy Rank Alignment". All necessary datasets and files from experiments in the paper can be found on our Huggingface Model and Datasets repositories.
 
+Project page: https://rotskoff-group.github.io/era-directed-evolution/
+
 ## Environment setup (uv)
 Create and sync the environment, then install the project in editable mode:
 
