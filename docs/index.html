@@ -108,6 +108,14 @@
         margin-top: 22px;
       }
 
+      .center-actions {
+        justify-content: center;
+      }
+
+      .spacious {
+        margin-bottom: 32px;
+      }
+
       .btn {
         padding: 12px 18px;
         border-radius: 999px;
@@ -122,6 +130,12 @@
       .btn.primary {
         background: var(--accent);
         color: #fff;
+      }
+
+      .btn.repo {
+        background: #cfe8e1;
+        border-color: #9ccbbf;
+        color: #0b3b35;
       }
 
       .btn:hover {
@@ -426,6 +440,9 @@ $$
 
       <section id="quickstart" class="fade-in delay-2">
         <h2>Train using your data</h2>
+        <div class="hero-actions center-actions spacious">
+          <a class="btn repo" href="https://github.com/rotskoff-group/era-directed-evolution">GitHub repository</a>
+        </div>
         <div class="stack">
           <div class="card">
             <h3>Environment setup</h3>
