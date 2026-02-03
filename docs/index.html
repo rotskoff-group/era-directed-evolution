@@ -307,6 +307,7 @@
         <div class="hero-card fade-in">
           <div class="eyebrow">ERA Directed Evolution</div>
           <h1>Efficient, few-shot protein discovery with energy rank alignment.</h1>
+          <p class="pill">Sebastian Ibarraran, Shriram Chennakesavalu, Frank Hu, and Grant M. Rotskoff</p>
           <p class="lede">
             ERA aligns learned sequence energies with experimental fitness rankings, enabling
             fast, data-efficient design loops. Use it to train geometric transformers, sample
@@ -402,8 +403,17 @@
               Energy rank alignment reframes few-shot protein engineering as preference
               optimization. Let $f(x)$ be a learned energy for sequence $x$. For any observed pair
               $(x_i, x_j)$ where $x_i$ is experimentally preferred to $x_j$, we enforce
-              $f(x_i) < f(x_j)$ using a smooth pairwise loss. A common choice is
-              $$\mathcal{L}(x_i, x_j) = \log\bigl(1 + \exp\bigl(f(x_i) - f(x_j)\bigr)\bigr),$$
+              $f(x_i) < f(x_j)$ using a smooth pairwise loss. We optimize
+$$
+\mathcal{L}_{\mathrm{ERA}}(\pi_\theta)
+= \mathbb{E}_{x \sim \mathcal{D},\, y,y' \sim \pi_{\mathrm{ref}}(\cdot \mid x)}
+\!\left[
+D_{\mathrm{KL}}\!\left(
+p_\gamma(y \succ y')
+\,\|\, p_\theta
+\right)
+\right].
+$$
               which penalizes inversions while remaining stable under limited data. Optimizing this
               ranking loss aligns energies with relative fitness ordering instead of absolute
               calibration, improving generalization when only a handful of measurements are
@@ -413,31 +423,8 @@
         </div>
       </section>
 
-      <section id="results" class="fade-in delay-2">
-        <h2>Highlighted outcomes</h2>
-        <div class="results">
-          <div class="card">
-            <div class="result-image">
-              <img src="assets/gb1.png" alt="GB1 results" />
-            </div>
-            <h3>Fitness ranking improvements</h3>
-            <p>Replace with a chart showing rank correlation gains across datasets.</p>
-          </div>
-          <div class="card">
-            <div class="result-image">Result image placeholder</div>
-            <h3>Sampling quality</h3>
-            <p>Highlight the percentage of high-fitness variants recovered in top samples.</p>
-          </div>
-          <div class="card">
-            <div class="result-image">Result image placeholder</div>
-            <h3>Landscape estimation</h3>
-            <p>Show full distribution predictions or density plots across landscapes.</p>
-          </div>
-        </div>
-      </section>
 
       <section id="quickstart" class="fade-in delay-2">
-        <span class="pill">Quickstart</span>
         <h2>Train using your data</h2>
         <div class="stack">
           <div class="card">
