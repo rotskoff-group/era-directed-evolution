@@ -109,7 +109,7 @@ Configure these in [pera/scripts/cfgs/train/train.yaml](pera/scripts/cfgs/train/
 ### Number of Rounds (Epochs)
 - **Location:** `trainer_args.max_epochs`
 - **Default:** `25`
-- **Description:** Maximum training epochs. Training uses early stopping based on validation loss.
+- **Description:** Maximum training epochs.
 
 ### Batch Size
 - **Location:** `nn.batch_size` (in [pera/scripts/cfgs/nn/geometric_transformer.yaml](pera/scripts/cfgs/nn/geometric_transformer.yaml))
