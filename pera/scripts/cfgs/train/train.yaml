@@ -3,7 +3,7 @@ resume_training_path: null
 lightning_model_args:
   eval_type: "era"
   beta: -10.0
-  gamma: 0.01
+  gamma: 0.0
   sampling_temperature: 1.0
   # optimizer: "AdamW"
   # optimizer_args:
@@ -27,7 +27,7 @@ trainer_args:
   devices: 2
   precision: "16-mixed"
   log_every_n_steps: 100
-  max_epochs: 10000
+  max_epochs: 25
   enable_progress_bar: False
   gradient_clip_val: 1.0
   # logger: "TensorBoardLogger"
