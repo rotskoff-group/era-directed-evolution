@@ -123,7 +123,7 @@ pera_train train.trainer_args.max_epochs=5000 train.lightning_model_args.beta=-1
 
 ---
 
-## Annotated End-to-End Example
+## Example: How to Run An Experiment
 
 This example demonstrates one complete alignment round on the GB1 dataset.
 
